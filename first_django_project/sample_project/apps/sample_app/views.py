@@ -15,3 +15,5 @@ def show(request, number):
 def edit(request, number):
     return HttpResponse("placeholder to edit blog %s"%number)
 
+def destroy(request, number):
+    return redirect("/")
