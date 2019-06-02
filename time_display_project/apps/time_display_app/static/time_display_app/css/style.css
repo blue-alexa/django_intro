@@ -1,0 +1,16 @@
+#time-label {
+  width: 200px;
+  font-size: 16px;
+  text-align: center;
+  border: solid 1px black;
+  margin: 36px auto;
+}
+
+#time-container {
+  width: 200px;
+  padding: 60px 120px;
+  text-align: center;
+  border: solid 1px black;
+  margin: auto;
+}
+
