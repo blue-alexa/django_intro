@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'random_word/css/style.css' %}">
+</head>
+<body>
+    <div id="content">
+        <p id="word-label">Random Word (attempt #{{request.session.session_sequence}})</p>
+        <h1 id="random-word">{{request.session.last_word}}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <button id="generate-button" type="submit">Generate</button>
+        </form>
+    </div>
+</body>
+</html>
