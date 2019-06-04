@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'make_money/css/style.css' %}">
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <p>Set your goal: <input name="goal" type="text">
+
+        <button type="submit">Submit</button></p>
+    </form>
+    <p>Current goal: {{request.session.goal}}</p>
+    <p>Your Gold: {{request.session.total}}</p>
+    <div class="forms">
+    <form method="post" action="/farm">
+        <p>Farm</p>
+        <p>(earns 10-20 golds)</p>
+        {% csrf_token %}
+        <button type="submit">Find Gold!</button>
+    </form>
+    <form method="post" action="/cave">
+        <p>Cave</p>
+        <p>(earns 5-10 golds)</p>
+        {% csrf_token %}
+        <button type="submit">Find Gold!</button>
+    </form>
+    <form method="post" action="/house">
+        <p>House</p>
+        <p>(earns 2-5 golds)</p>
+        {% csrf_token %}
+        <button type="submit">Find Gold!</button>
+    </form>
+    <form method="post" action="/casino">
+        <p>Casino</p>
+        <p>(earns/takes 0-50 golds)</p>
+        {% csrf_token %}
+        <button type="submit">Find Gold!</button>
+    </form>
+    </div>
+    <div class="activities">
+    <ul>
+    {% for location, amount, time in request.session.history %}
+        {% if amount >= 0 %}
+        <li class="won">Earned {{amount}} golds from the {{location}} ({{time}})</li>
+        {% else %}
+        <li class="loss">Entered a casino and lost {{amount}} golds...Ouch..({{time}})</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+    </div>
+    <h1>{{request.session.result}}</h1>
+</body>
+</html>
