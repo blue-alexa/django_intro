@@ -15,7 +15,7 @@ from . import team_maker
 
 def index(request):
 	# all baseball leagues
-	league_1 = League.objects.filter(Q(name__contains="Women") & Q(name__contains="Baseball"))
+	league_1 = League.objects.filter(name__contains="Baseball")
 
 	# all womens' leagues
 	league_2 = League.objects.filter(name__contains="Women")
@@ -27,7 +27,7 @@ def index(request):
 	league_4 = League.objects.exclude(sport__contains="football")
 
 	# all leagues that call themselves "conferences"
-	league_5 = League.objects.filter(name__contains="conferences")
+	league_5 = League.objects.filter(name__contains="conference")
 
 	# all leagues in the Atlantic region
 	league_6 = League.objects.filter(name__contains="Atlantic")
