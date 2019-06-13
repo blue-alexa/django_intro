@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Sports Leagues</title>
+	</head>
+	<body>
+		<h1>all teams in the Atlantic Soccer Conference</h1>
+		<ol>
+			{% for team in teams_1 %}
+				<li>{{team.location}} {{team.team_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>all (current) players on the Boston Penguins</h1>
+		<ol>
+			{% for player in players_1 %}
+				<li>{{player.first_name}} {{player.last_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>all (current) players in the International Collegiate Baseball Conferences</h1>
+		<ol>
+			{% for player in players_2 %}
+				<li>{{player.first_name}} {{player.last_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>all (current) player in the American Conference of Amateur Football with last name "Lopez"</h1>
+		<ol>
+			{% for player in players_3 %}
+				<li>{{player.first_name}} {{player.last_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>all football players</h1>
+		<ol>
+			{% for player in players_4 %}
+				<li>{{player.first_name}} {{player.last_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>all teams with a (current) player named "Sophia"</h1>
+		<ol>
+			{% for team in teams_2 %}
+				<li>{{team.location}} {{team.team_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>all leagues with a (current) player named "Sophia"</h1>
+		<ol>
+			{% for league in leagues_1 %}
+				<li>{{league.name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>everyone with the last name "Flores" who DOESN'T (currently) play for the Washington Roughriders</h1>
+		<ol>
+			{% for player in players_5 %}
+				<li>{{player.first_name}} {{player.last_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>all teams, past and present, that Samuel Evans has played with</h1>
+		<ol>
+			{% for team in teams_3 %}
+				<li>{{team.location}} {{team.team_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>all players, past and present, with the Manitoba Tiger-Cats</h1>
+		<ol>
+			{% for player in players_6 %}
+				<li>{{player.first_name}} {{player.last_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>all players who were formerly (but aren't currently) with the Wichita Vikings</h1>
+		<ol>
+			{% for player in players_7 %}
+				<li>{{player.first_name}} {{player.last_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>every team that Jacob Gray played for before he joined the Oregon Colts</h1>
+		<ol>
+			{% for team in teams_4 %}
+				<li>{{team.location}} {{team.team_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>every team that Jacob Gray played for before he joined the Oregon Colts</h1>
+		<ol>
+			{% for team in teams_5 %}
+				<li>{{team.location}} {{team.team_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>everyone named "Joshua" who has ever played in the Atlantic Federation of Amateur Baseball Players</h1>
+		<ol>
+			{% for player in players_8 %}
+				<li>{{player.first_name}} {{player.last_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>all teams that have had 12 or more players, past and present. </h1>
+		<ol>
+			{% for team in teams_6 %}
+				<li>{{team.location}} {{team.team_name}}</li>
+			{% endfor %}
+		</ol>
+		<h1>all players and count of teams played for, sorted by the number of teams they've played for.</h1>
+		<ol>
+			{% for player in players_9 %}
+				<li>{{player.first_name}} {{player.last_name}}</li>
+			{% endfor %}
+		</ol>
+	</body>
+</html>
