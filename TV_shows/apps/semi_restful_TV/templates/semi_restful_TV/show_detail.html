@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>TV Show {{show.id}}</h1>
+        <p>Title: {{show.title}}</p>
+        <p>Network: {{show.curr_network.name}}</p>
+        <p>Release Date: {{show.release_date|date:'M j, Y'}}</p>
+        <p>Description: {{show.desc}}</p>
+        <p>Last Updated: {{show.updated_at|date:'Y-m-d H:i'}}</p>
+        <a href="{% url 'edit_show' id=show.id %}">Edit</a>
+        <span><a href="{% url 'delete_show' id=show.id %}">Delete</a></span>
+</body>
+</html>
