@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title_html %}{% endblock %}</title>
+    <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.44/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdn.bootcss.com/moment.js/2.17.1/moment.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.44/js/bootstrap-datetimepicker.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align:center">
+          {% block h1 %}{% endblock %}
+        </h1>
+        <span>
+            <a href="{% url 'index' %}">Go back</a>
+        </span>
+    </div>
+    <div class="container">
+        <form {% block form_action_link %}{% endblock %} method="post" id="show_form">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                    <input class="form-control"
+                           id="{{ form.title.id_for_label }}"
+                           name="{{ form.title.name }}"
+                           type="text"
+                           {% if form.title.value != None %}value="{{ form.title.value|stringformat:'s' }}"{% endif %}
+                           {% if form.title.field.required %}required{% endif %}>
+                    <p class="invalid-feedback" id="title_error">
+                    {% if form.is_bound %}
+                        {% if form.title.errors %}
+                            {% for error in form.title.errors %}
+                                  {{ error }}
+                            {% endfor %}
+                        {% endif %}
+                        {% if 'title' in errors %}
+                            {% for error in errors.title %}
+                                {{ error }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6">
+                    <label for="{{ form.network.id_for_label }}">{{ form.network.label }}</label>
+                    <input class="form-control"
+                           id="{{ form.network.id_for_label }}"
+                           name="{{ form.network.name }}"
+                           type="text"
+                           {% if form.network.value != None %}value="{{ form.network.value|stringformat:'s' }}"{% endif %}
+                           {% if form.network.field.required %}required{% endif %}>
+                    <p class="invalid-feedback" id="network_error">
+                    {% if form.is_bound %}
+                        {% if form.network.errors %}
+                            {% for error in form.network.errors %}
+                                  {{ error }}
+                            {% endfor %}
+                        {% endif %}
+                        {% if 'network' in errors %}
+                            {% for error in errors.network %}
+                                {{ error }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6">
+                    <label for="{{ form.release_date.id_for_label }}">{{ form.release_date.label }}</label>
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input class="form-control"
+                               id="{{ form.release_date.id_for_label }}"
+                               name="release_date"
+                               type='text'
+                               {% if form.release_date.value != None %}value="{{ form.release_date.value }}"{% endif %} />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <p class="invalid-feedback" id="release_date_error">
+                    {% if form.is_bound %}
+                        {% if form.release_date.errors %}
+                            {% for error in form.release_date.errors %}
+                                  {{ error }}
+                            {% endfor %}
+                        {% endif %}
+                        {% if 'release_date' in errors %}
+                            {% for error in errors.release_date %}
+                                {{ error }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label for="{{ form.desc.id_for_label }}">Description</label>
+                    <textarea class="form-control"
+                              rows="3"
+                              id="{{ form.desc.id_for_label }}"
+                              name="{{ form.desc.name }}"
+                              type="text"
+                              {% if form.desc.field.required %}required{% endif %}>{% if form.desc.value != None %}{{ form.desc.value }}{% endif %}
+                    </textarea>
+                    <p class="invalid-feedback" id="desc_error">
+                    {% if form.is_bound %}
+                        {% if form.desc.errors %}
+                            {% for error in form.desc.errors %}
+                                  {{ error }}
+                            {% endfor %}
+                        {% endif %}
+                        {% if 'desc' in errors %}
+                            {% for error in errors.desc %}
+                                {{ error }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button type="submit" style="display: block; margin: 0 auto;">{% block submit_button_name %}{% endblock %}</button>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+            format: 'MM/DD/YYYY',
+            });
+        });
+    </script>
+
+    {% block javascript %}{% endblock %}
+    {% block extra_link_content %}{% endblock %}
+</body>
+</html>

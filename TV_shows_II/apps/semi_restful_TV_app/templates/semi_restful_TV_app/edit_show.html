@@ -1,0 +1,18 @@
+{% extends "semi_restful_TV_app/show_form_base.html" %}
+{% block title_html %}
+    Edit Show
+{% endblock %}
+{% block h1 %}
+    Edit Show {{show_id}}
+{% endblock %}
+{% block form_action_link %}
+    action="{% url 'update_show' id=show_id%}"
+{% endblock %}
+{% block submit_button_name %}
+    Update
+{% endblock %}
+{% block extra_link_content %}
+    <div class="row" style="text-align:center">
+        <a href="{% url 'display_show' id=show_id %}">Go to Show</a>
+    </div>
+{% endblock %}

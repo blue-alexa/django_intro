@@ -1,0 +1,13 @@
+{% extends "semi_restful_TV_app/show_form_base.html" %}
+{% block title_html %}
+    Create Show
+{% endblock %}
+{% block h1 %}
+    Add a New Show
+{% endblock %}
+{% block form_action_link %}
+    action="{% url 'save_show' %}"
+{% endblock %}
+{% block submit_button_name %}
+    Create
+{% endblock %}
