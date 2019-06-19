@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Main Page</title>
+
+</head>
+<body>
+    <div class="container">
+        <h1>Add a new course</h1>
+        <form method="post" id="course_form">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label for="{{ form.name.id_for_label }}">Name</label>
+                    <input class="form-control"
+                           id="{{ form.name.id_for_label }}"
+                           name="{{ form.name.name }}"
+                           type="text"
+                           {% if form.name.value != None %}value="{{ form.name.value|stringformat:'s' }}"{% endif %}
+                           {% if form.name.field.required %}required{% endif %}>
+                    <p class="invalid-feedback" id="name_error">
+                        {% if form.is_bound %}
+                            {% if form.name.errors %}
+                                {% for error in form.name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            {% endif %}
+                            {% if 'name' in errors %}
+                                {{ errors.name }}
+                            {% endif %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label for="{{ form.desc.id_for_label }}">Description</label>
+                    <textarea class="form-control"
+                              rows="3"
+                              id="{{ form.desc.id_for_label }}"
+                              name="{{ form.desc.name }}"
+                              type="text"
+                              {% if form.desc.field.required %}required{% endif %}>{% if form.desc.value != None %}{{ form.desc.value }}{% endif %}</textarea>
+                    <p class="invalid-feedback" id="desc_error">
+                    {% if form.is_bound %}
+                        {% if form.desc.errors %}
+                            {% for error in form.desc.errors %}
+                                  {{ error }}
+                            {% endfor %}
+                        {% endif %}
+                        {% if 'desc' in errors %}
+                            {{ errors.desc }}
+                        {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button type="submit" style="display: block; margin: 0 auto;" class="btn btn-primary btn-lg">Add</button>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <h1>All Shows</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Course Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Date Added</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            {% for course in all_courses %}
+            <tr>
+                <td>{{course.name}}</td>
+                <td>{{course.desc.content}}</td>
+                <td>{{course.created_at|date:'M j, Y H:gA'}}</td>
+                <td>
+                    <a href="{% url 'remove_course' id=course.id %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">remove</a>
+                    <a href="{% url 'add_comment' id=course.id %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">add a comment</a>
+                    <a href="{% url 'display_comments' id=course.id %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">view all comments</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+</html>

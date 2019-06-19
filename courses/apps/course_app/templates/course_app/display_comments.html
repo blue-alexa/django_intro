@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body>
+    <div class="container">
+        <h1>All comments for Course {{course.name}}</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Comment</th>
+                    <th scope="col">Date Added</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            {% for comment in course.comments.all %}
+            <tr>
+                <td>{{comment.text}}</td>
+                <td>{{comment.created_at|date:'M j, Y H:gA'}}</td>
+                <td>
+                    <a href="{% url 'delete_comment' CourseId=course.id CommentId=comment.id %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="{% url 'main_page' %}">back to all courses</a>
+    </div>
+</body>
+</html>
