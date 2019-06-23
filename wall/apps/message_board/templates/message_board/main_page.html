@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <title>Main Messages Page</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h1>CodingDojo Wall</h1>
+        </div>
+        <div class="col">
+            <p align="right">Welcome {{request.session.first_name}}</p>
+        </div>
+        <div class="col">
+            <a href="{% url 'log_out' %}" style="float:right">Log out</a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12">
+        <form id="message_form" action="{% url 'add_message' %}" method="POST">
+            {% csrf_token %}
+            {% for field in mform %}
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label for="{{ field.id_for_label }}_message">{{ field.label }}</label>
+                    <input class="form-control"
+                           id="{{ field.id_for_label }}_message"
+                           name="{{ field.name }}"
+                           type="{{ field.field.widget.input_type }}"
+                           {% for attr, value in field.field.widget.attrs.items %}
+                           {{ attr }}="{{value}}"
+                           {% endfor %}
+                           {% if field.value != None %}value="{{ field.value }}"{% endif %}
+                           {% if field.field.required %}required{% endif %}>
+                    <p id="{{ field.name }}_error_message">
+                    {% if mform.is_bound %}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                {{ error }}<br>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="col-md-12 text-right">
+                <button type="submit" name='submit' class="btn btn-secondary">Post a message</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% for message in messages %}
+    <div class = "container">
+        <div class="ml-2">
+            <p class="lead">{{ message.user_id.first_name }} {{ message.user_id.last_name }} - {{ message.created_at|date:'F, j S Y' }}</p>
+            {% if message.user_id.id == request.session.userId %}
+            <span><a href="{% url 'delete_message' message_id=message.id %}" style="float: right;">delete</a></span>
+            {% endif %}
+            <p class="lead">{{ message.message }}</p>
+        </div>
+        <div class="ml-4">
+        {% for comment in message.comments.all %}
+            <p>{{ comment.user_id.first_name }} {{ comment.user_id.last_name }} - {{ comment.created_at|date:'F, j S Y H:i' }}</p>
+            {% if comment.user_id.id == request.session.userId %}
+            <span><a href="{% url 'delete_comment' comment_id=comment.id %}" style="float: right;">delete</a></span>
+            {% endif %}
+            <p>{{ comment.comment }}</p>
+        {% endfor %}
+        </div>
+        <div class="ml-4">
+            <form action="{% url 'add_comment' %}" method="POST">
+                {% csrf_token %}
+                {% for field in cform %}
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label for="{{ field.id_for_label }}_comment">{{ field.label }}</label>
+                        <input class="form-control"
+                               id="{{ field.id_for_label }}_comment"
+                               name="{{ field.name }}"
+                               type="{{ field.field.widget.attrs.type }}"
+                               {% for attr, value in field.field.widget.attrs.items %}
+                               {{ attr }}="{{value}}"
+                               {% endfor %}
+                               {% if field.value != None %}value="{{ field.value }}"{% endif %}
+                               {% if field.field.required %}required{% endif %}>
+                        <p id="{{ field.name }}_error_comment">
+                        {% if cform.is_bound %}
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    {{ error }}<br>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="col-md-12 text-right">
+                    <button type="submit" name='submit' value="{{message.id}}" class="btn btn-secondary mr-auto">Post a comment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endfor %}
+
+</body>
+</html>
