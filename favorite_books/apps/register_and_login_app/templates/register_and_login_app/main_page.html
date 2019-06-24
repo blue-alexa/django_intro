@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <title>Main Page</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Registration</h1>
+                <form id="RegisterForm" method="POST">
+                    {% csrf_token %}
+                    {% for field in rform %}
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="{{ field.id_for_label }}_register">{{ field.label }}</label>
+                            <input class="form-control"
+                                   id="{{ field.id_for_label }}_register"
+                                   name="{{ field.name }}"
+                                   type="{{ field.field.widget.input_type }}"
+                                   {% for attr, value in field.field.widget.attrs.items %}
+                                   {{ attr }}="{{value}}"
+                                   {% endfor %}
+                                   {% if field.value != None %}value="{{ field.value }}"{% endif %}
+                                   {% if field.field.required %}required{% endif %}>
+                            <p id="{{ field.name }}_error_register">
+                            {% if rform.is_bound %}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        {{ error }}<br>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="submit" name='register' value="Register">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col">
+                <h1>Login</h1>
+                <form id="LoginForm" method="POST">
+                    {% csrf_token %}
+                    {% for field in lform %}
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="{{ field.id_for_label }}_login">{{ field.label }}</label>
+                            <input class="form-control"
+                                   id="{{ field.id_for_label }}_login"
+                                   name="{{ field.name }}"
+                                   type="{{ field.field.widget.input_type }}"
+                                   {% for attr, value in field.field.widget.attrs.items %}
+                                   {{ attr }}="{{value}}"
+                                   {% endfor %}
+                                   {% if field.value != None %}value="{{ field.value }}"{% endif %}
+                                   {% if field.field.required %}required{% endif %}>
+                            <p id="{{ field.name }}_error_login">
+                            {% if lform.is_bound %}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        {{ error }}<br>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="submit" name='login' value="Log In">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <p>Welcome {{request.session.first_name}}</p>
+        </div>
+        <div class="col-4">
+            <a href="{% url 'log_out' %}" style="float:right">Log out</a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <form id="book_form" method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}_message">{{ field.label }}</label>
+                    <input class="form-control"
+                           id="{{ field.id_for_label }}_message"
+                           name="{{ field.name }}"
+                           type="{{ field.field.widget.input_type }}"
+                           {% for attr, value in field.field.widget.attrs.items %}
+                           {{ attr }}="{{value}}"
+                           {% endfor %}
+                           {% if field.value != None %}value="{{ field.value }}"{% endif %}
+                           {% if field.field.required %}required{% endif %}>
+                    <p id="{{ field.name }}_error_message">
+                    {% if form.is_bound %}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                {{ error }}<br>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+                {% endfor %}
+                <button type="submit" name='submit' class="btn btn-secondary">Add</button>
+            </form>
+        </div>
+        <div class="col-8">
+            <h1>All books</h1>
+            {% for book in books %}
+            <div class="container">
+                <a href="{% url 'book_detail' book_id=book.id %}">{{book.title}}</a>
+                <p>(added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}})</p>
+                {% if book.uploaded_by.id == request.session.userId %}
+                <p>This is one of your favorite.</p>
+                {% else %}
+                <a href="{% url 'add_to_favorite' book_id=book.id %}">Add to favorite</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

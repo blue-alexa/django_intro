@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <title>Edit Book</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <p>Welcome {{request.session.first_name}}</p>
+        </div>
+        <div class="col-4">
+            <a href="{% url 'log_out' %}" style="float:right">Log out</a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <form id="book_form" action="{% url 'edit_book' book_id=book.id %}" method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}_message">{{ field.label }}</label>
+                    <input class="form-control"
+                           id="{{ field.id_for_label }}_message"
+                           name="{{ field.name }}"
+                           type="{{ field.field.widget.input_type }}"
+                           {% for attr, value in field.field.widget.attrs.items %}
+                           {{ attr }}="{{value}}"
+                           {% endfor %}
+                           {% if field.value != None %}value="{{ field.value }}"{% endif %}
+                           {% if field.field.required %}required{% endif %}>
+                    <p id="{{ field.name }}_error_message">
+                    {% if form.is_bound %}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                {{ error }}<br>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+                {% endfor %}
+                <button type="submit" name='update' class="btn btn-secondary">Update</button>
+                <button type="submit" name='delete' class="btn btn-secondary">Delete</button>
+            </form>
+            <p>Added by: {{ book.uploaded_by.first_name }} {{ book.uploaded_by.last_name }}</p>
+            <p>Added on: {{ book.created_at|date:'M j, Y @ H:gA' }}</p>
+            <p>Last updated on: {{ book.updated_at|date:'M j, Y @ H:gA' }}</p>
+        </div>
+        <div class="col-6">
+            <h1>Users Who Like This Book:</h1>
+            {% for user in book.users_who_like.all %}
+            <li>{{ user.first_name }} {{ user.last_name }}</li>
+            {% endfor %}
+            {% if unfavorite == True %}
+            <a href="{% url 'remove_favorite' book_id=book.id %}">Un-Favorite</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>
